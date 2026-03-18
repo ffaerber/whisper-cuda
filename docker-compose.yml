@@ -1,11 +1,14 @@
 services:
   whisper:
     build: .
+    runtime: nvidia
     ports:
       - "9000:9000"
     environment:
       - ASR_MODEL=large-v3-turbo
       - COMPUTE_TYPE=float16
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
     volumes:
       - whisper-models:/root/.cache/huggingface
     deploy:
