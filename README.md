@@ -6,6 +6,39 @@ Uses [faster-whisper](https://github.com/SYSTRAN/faster-whisper) with CTranslate
 
 ## Quick Start
 
+Run from Docker Hub:
+
+```yaml
+# docker-compose.yml
+services:
+  whisper:
+    image: cipherdolls/whisper:latest
+    runtime: nvidia
+    ports:
+      - "9000:9000"
+    environment:
+      - ASR_MODEL=large-v3-turbo
+      - COMPUTE_TYPE=float16
+    volumes:
+      - whisper-models:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+volumes:
+  whisper-models:
+```
+
+```bash
+docker compose up
+```
+
+Or build from source:
+
 ```bash
 docker compose up --build
 ```
@@ -54,6 +87,6 @@ Returns model status, device, and compute type.
 ## Why Custom?
 
 No pre-built Whisper Docker image supports RTX 5090 / Blackwell (sm_120). This image uses:
-- `nvidia/cuda:12.8.0-cudnn9-runtime-ubuntu22.04` for sm_120 support
+- `nvidia/cuda:12.8.1-cudnn-runtime-ubuntu22.04` for sm_120 support
 - `float16` compute type (INT8 tensor cores on Blackwell require padding fixes not yet in stable CTranslate2)
 - No PyTorch dependency — faster-whisper uses CTranslate2 directly
