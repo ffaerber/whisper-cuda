@@ -21,7 +21,7 @@ jobs:
       - uses: docker/metadata-action@v5
         id: meta
         with:
-          images: cipherdolls/whisper
+          images: ffaerber/whisper-cuda
           tags: |
             type=sha
             type=raw,value=latest,enable={{is_default_branch}}

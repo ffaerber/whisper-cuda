@@ -12,7 +12,7 @@ Run from Docker Hub:
 # docker-compose.yml
 services:
   whisper:
-    image: cipherdolls/whisper:latest
+    image: ffaerber/whisper-cuda:latest
     runtime: nvidia
     ports:
       - "9000:9000"
